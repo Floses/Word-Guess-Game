@@ -1,3 +1,5 @@
+//Our list of countries for our game
+
 var countryList = [
   "Afghanistan",
   "Albania",
@@ -209,4 +211,10 @@ var countryList = [
   "Zimbabwe"
 ];
 
-var countryList = countryList[Math.floor(Math.random() * countryList.length)];
+//Picks a random word from our countryList array
+var country = countryList[Math.floor(Math.random() * countryList.length)];
+
+var answerArray = [];
+for (var i = 0; i < country.length; i++) {
+  answerArray[i] = "_";
+}
