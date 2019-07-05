@@ -15,7 +15,7 @@
     <title>Hangman</title>
   </head>
   <body>
-    <div class="wrapper">
+    <div class="wrapper" id="wrapper">
       <div class="jumbotron jumbotron-fluid">
         <h1 class="display-3">Where will you go?</h1>
         <p class="lead">Guess the country!</p>
@@ -23,7 +23,18 @@
       <div class="row">
         <img class="col-6" alt="globe" src="assets/images/globe.jpg" />
         <div class="col-6" id="gameArea">
-          <h4>Press any key to get started!</h4>
+          <h4 id="gameStatus">Press any key to get started!</h4>
+        </br>
+        <div class="row">Wins:<span id="wins"></span></div>
+    </br>
+</br>
+<div class="row">Current Word:<span id="currentWord"></span></div>
+</br>
+</br>
+<div class="row">Guessed Letters:<span id="guesses"></span></div>
+</br>
+</br>
+<div class="row">Tries Left: <span id="tries"></span></div>
         </div>
       </div>
     </div>
@@ -42,5 +53,6 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
+    <script type="text/javascript" src="assets/javascript/game.js"></script>
   </body>
 </html>

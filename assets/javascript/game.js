@@ -1,13 +1,10 @@
-//Our list of countries for our game
-
-var countryList = [
+var words = [
   "Afghanistan",
   "Albania",
   "Algeria",
   "Andorra",
   "Angola",
   "Anguilla",
-  "Antigua &amp; Barbuda",
   "Argentina",
   "Armenia",
   "Aruba",
@@ -25,49 +22,32 @@ var countryList = [
   "Bermuda",
   "Bhutan",
   "Bolivia",
-  "Bosnia &amp; Herzegovina",
   "Botswana",
   "Brazil",
-  "British Virgin Islands",
   "Brunei",
   "Bulgaria",
-  "Burkina Faso",
   "Burundi",
   "Cambodia",
   "Cameroon",
   "Canada",
-  "Cape Verde",
-  "Cayman Islands",
   "Chad",
   "Chile",
   "China",
   "Colombia",
   "Congo",
-  "Cook Islands",
-  "Costa Rica",
-  "Cote D Ivoire",
   "Croatia",
-  "Cruise Ship",
   "Cuba",
   "Cyprus",
-  "Czech Republic",
   "Denmark",
   "Djibouti",
   "Dominica",
-  "Dominican Republic",
   "Ecuador",
   "Egypt",
-  "El Salvador",
-  "Equatorial Guinea",
   "Estonia",
   "Ethiopia",
-  "Falkland Islands",
-  "Faroe Islands",
   "Fiji",
   "Finland",
   "France",
-  "French Polynesia",
-  "French West Indies",
   "Gabon",
   "Gambia",
   "Georgia",
@@ -81,11 +61,9 @@ var countryList = [
   "Guatemala",
   "Guernsey",
   "Guinea",
-  "Guinea Bissau",
   "Guyana",
   "Haiti",
   "Honduras",
-  "Hong Kong",
   "Hungary",
   "Iceland",
   "India",
@@ -93,7 +71,6 @@ var countryList = [
   "Iran",
   "Iraq",
   "Ireland",
-  "Isle of Man",
   "Israel",
   "Italy",
   "Jamaica",
@@ -103,7 +80,6 @@ var countryList = [
   "Kazakhstan",
   "Kenya",
   "Kuwait",
-  "Kyrgyz Republic",
   "Laos",
   "Latvia",
   "Lebanon",
@@ -134,9 +110,6 @@ var countryList = [
   "Namibia",
   "Nepal",
   "Netherlands",
-  "Netherlands Antilles",
-  "New Caledonia",
-  "New Zealand",
   "Nicaragua",
   "Niger",
   "Nigeria",
@@ -145,38 +118,25 @@ var countryList = [
   "Pakistan",
   "Palestine",
   "Panama",
-  "Papua New Guinea",
   "Paraguay",
   "Peru",
   "Philippines",
   "Poland",
   "Portugal",
-  "Puerto Rico",
   "Qatar",
   "Reunion",
   "Romania",
   "Russia",
   "Rwanda",
-  "Saint Pierre &amp; Miquelon",
   "Samoa",
-  "San Marino",
   "Satellite",
-  "Saudi Arabia",
   "Senegal",
   "Serbia",
   "Seychelles",
-  "Sierra Leone",
   "Singapore",
   "Slovakia",
   "Slovenia",
-  "South Africa",
-  "South Korea",
   "Spain",
-  "Sri Lanka",
-  "St Kitts &amp; Nevis",
-  "St Lucia",
-  "St Vincent",
-  "St. Lucia",
   "Sudan",
   "Suriname",
   "Swaziland",
@@ -187,34 +147,77 @@ var countryList = [
   "Tajikistan",
   "Tanzania",
   "Thailand",
-  "Timor L'Este",
   "Togo",
   "Tonga",
-  "Trinidad &amp; Tobago",
   "Tunisia",
   "Turkey",
   "Turkmenistan",
-  "Turks &amp; Caicos",
   "Uganda",
   "Ukraine",
-  "United Arab Emirates",
-  "United Kingdom",
-  "United States",
-  "United States Minor Outlying Islands",
   "Uruguay",
   "Uzbekistan",
   "Venezuela",
   "Vietnam",
-  "Virgin Islands (US)",
   "Yemen",
   "Zambia",
   "Zimbabwe"
 ];
 
-//Picks a random word from our countryList array
-var country = countryList[Math.floor(Math.random() * countryList.length)];
+var wins = 0;
+var currentWord = " ";
+var tries = 10;
+var word;
+var userText = document.getElementById("guesses");
+var currentWordDiv = document.getElementById("currentWord");
+var guessedLetters;
 
-var answerArray = [];
-for (var i = 0; i < country.length; i++) {
-  answerArray[i] = "_";
+function resetGame() {
+  document.getElementById("gameStatus").innerHTML =
+    "Press any key to get started.";
+
+  tries = 10;
+  document.getElementById("wins").innerHTML = wins;
+  document.getElementById("tries").innerHTML = tries;
+  currentWord = [];
+  guessedLetters = [];
+  word = words[Math.floor(Math.random() * words.length)].toLowerCase();
+  for (var i = 0; i < word.length; i++) {
+    currentWord.push("_");
+  }
+  currentWordDiv.innerHTML = currentWord.join(" ");
+  userText.innerHTML = "";
+
+  document.onkeyup = function(event) {
+    document.getElementById("gameStatus").innerHTML = "Keep guessing!";
+    var letterIndex = word.indexOf(event.key, 0);
+
+    if (letterIndex === -1 && guessedLetters.indexOf(event.key) === -1) {
+      userText.innerHTML += event.key;
+      guessedLetters.push(event.key);
+
+      tries--;
+      document.getElementById("tries").innerHTML = tries;
+
+      if (tries === 0) {
+        document.getElementById("gameStatus").innerHTML = "YOU LOSE!!!";
+        document.onkeyup = function() {
+          resetGame();
+        };
+      }
+    }
+    while (letterIndex > -1) {
+      currentWord[letterIndex] = event.key;
+      currentWordDiv.innerHTML = currentWord.join(" ");
+      letterIndex = word.indexOf(event.key, letterIndex + 1);
+    }
+    if (word === currentWord.join("")) {
+      wins++;
+      document.getElementById("gameStatus").innerHTML = "YOU WIN!!!";
+      document.onkeyup = function() {
+        resetGame();
+      };
+    }
+  };
 }
+
+resetGame();
